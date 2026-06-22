@@ -1,73 +1,292 @@
-# RaahiOne Smart Commute Backend
+# RaahiOne Smart Commute Platform
 
-Backend prototype for a smart commute matching platform. It supports authentication, ride publishing, ride discovery, booking requests, cancellation, ratings, admin analytics, and explainable ride recommendations.
+A smart commute matching platform that helps passengers discover rides, request bookings, receive explainable ride recommendations, and manage their commute preferences.
+
+## Live Demo
+
+### Frontend
+
+https://raahione-tau.vercel.app/
+
+### Backend API
+
+https://raahione-iyvd.onrender.com
+
+### API Documentation
+
+https://raahione-iyvd.onrender.com/docs
+
+---
+
+## Features
+
+### Authentication
+
+* User Registration
+* User Login
+* JWT-based Authentication
+* Protected Routes
+* Admin User Support
+
+### Ride Management
+
+* Create Ride
+* Browse Available Rides
+* View Ride Details
+* Seat Availability Tracking
+
+### Booking System
+
+* Request Ride Booking
+* View My Bookings
+* Cancel Booking
+* Booking Status Management
+
+### Smart Recommendation Engine
+
+* Location-based ride matching
+* Distance scoring
+* Time-window matching
+* User preference support
+* Explainable recommendation scores
+
+### Ratings
+
+* Rate completed rides
+* Store passenger feedback
+
+### Admin Analytics
+
+* Total Users
+* Active Rides
+* Booking Statistics
+* Open Request Monitoring
+
+---
 
 ## Tech Stack
 
-- FastAPI
-- SQLAlchemy
-- PostgreSQL
-- JWT authentication
-- Pydantic
+### Backend
 
-## Setup
+* FastAPI
+* SQLAlchemy
+* PostgreSQL
+* JWT Authentication
+* Pydantic
+
+### Frontend
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+
+### Deployment
+
+* Frontend: Vercel
+* Backend: Render
+* Database: PostgreSQL
+
+---
+
+## Project Structure
+
+```text
+backend/
+├── app/
+│   ├── api/
+│   ├── core/
+│   ├── db/
+│   ├── models/
+│   ├── schemas/
+│   ├── services/
+│   └── utils/
+
+frontend/
+├── src/
+├── components/
+├── pages/
+└── services/
+```
+
+---
+
+## Local Setup
 
 ### Backend
 
 ```bash
 cd backend
+
 python -m venv venv
+
+# Windows
 venv\Scripts\activate
+
 pip install -r requirements.txt
+
 uvicorn app.main:app --reload
 ```
+
+Backend runs at:
+
+```text
+http://localhost:8000
+```
+
+---
 
 ### Frontend
 
 ```bash
 cd frontend
+
 npm install
-cp .env.example .env
+
 npm run dev
 ```
 
-The frontend reads `VITE_API_URL` (default `http://localhost:8000`). Vite also proxies `/api` to the backend during local development.
+Frontend runs at:
 
+```text
+http://localhost:5173
+```
 
-Set `DATABASE_URL` in `.env` if your PostgreSQL URL differs from the default. Set `ADMIN_REGISTRATION_KEY` before creating an admin user.
+---
 
-## Key Endpoints
+## Environment Variables
 
-- `POST /auth/register`
-- `POST /auth/login`
-- `GET /auth/me`
-- `POST /rides/`
-- `GET /rides/`
-- `POST /rides/{ride_id}/book`
-- `GET /bookings/me`
-- `PATCH /bookings/{booking_id}/cancel`
-- `POST /recommendations/rides`
-- `POST /ratings/rides/{ride_id}`
-- `GET /admin/analytics`
+### Backend (.env)
 
-## Recommendation Request Example
+```env
+DATABASE_URL=postgresql://username:password@host:5432/database
+
+SECRET_KEY=your-secret-key
+
+ALGORITHM=HS256
+
+ACCESS_TOKEN_EXPIRE_MINUTES=1000
+
+ADMIN_REGISTRATION_KEY=your-admin-key
+```
+
+### Frontend (.env)
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Production:
+
+```env
+VITE_API_URL=https://raahione-iyvd.onrender.com
+```
+
+---
+
+## Core API Endpoints
+
+### Authentication
+
+```http
+POST /auth/register
+POST /auth/login
+GET /auth/me
+```
+
+### Rides
+
+```http
+POST /rides/
+GET /rides/
+GET /rides/{ride_id}
+POST /rides/{ride_id}/book
+```
+
+### Bookings
+
+```http
+GET /bookings/me
+PATCH /bookings/{booking_id}/cancel
+```
+
+### Recommendations
+
+```http
+POST /recommendations/rides
+```
+
+### Ratings
+
+```http
+POST /ratings/rides/{ride_id}
+```
+
+### Admin
+
+```http
+GET /admin/analytics
+```
+
+---
+
+## Recommendation Engine Example
+
+### Request
 
 ```json
 {
   "source": "Indiranagar Metro",
-  "source_lat": 12.978,
-  "source_lng": 77.638,
   "destination": "Whitefield",
-  "destination_lat": 12.97,
-  "destination_lng": 77.749,
   "departure_time": "2026-06-22T09:15:00",
   "max_walk_km": 2,
   "time_window_minutes": 60
 }
 ```
 
-The response includes ranked rides with component scores and a reason string so the recommendation is explainable.
+### Response Features
 
-## Deployment
+The recommendation engine returns:
 
-Deployment is required by the assignment. Add the final public API URL here after deploying to Render, Railway, AWS, or another cloud provider.
+* Ranked rides
+* Match scores
+* Distance calculations
+* Time compatibility scores
+* Explainable recommendation reasons
+
+Example:
+
+```json
+{
+  "ride_id": 1,
+  "score": {
+    "total": 91.2,
+    "reason": "Closest pickup point with matching departure time"
+  }
+}
+```
+
+---
+
+## Assignment Notes
+
+This project was developed as a backend-focused smart commute platform prototype.
+
+Implemented requirements include:
+
+* Authentication & Authorization
+* Ride Publishing
+* Ride Discovery
+* Ride Booking
+* Recommendation Engine
+* Ratings
+* Admin Analytics
+* PostgreSQL Integration
+* Cloud Deployment
+* RESTful API Design
+
+---
+
+## Author
+
+Aryan Sharma
